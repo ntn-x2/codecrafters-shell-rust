@@ -1,13 +1,15 @@
+use std::io::BufRead;
 #[allow(unused_imports)]
 use std::io::Write;
 
-pub fn prompt_command() -> String {
-    print!("$ ");
-    std::io::stdout().flush().unwrap();
+use command::{Command, CommandParser};
+
+mod command;
+
+pub fn parse_command<Input: BufRead>(input: &mut Input) -> Result<Box<dyn Command>, String> {
     {
-        let stdin = std::io::stdin();
-        let mut input = String::new();
-        stdin.read_line(&mut input).unwrap();
-        input
+        let mut buffer = String::new();
+        input.read_line(&mut buffer).unwrap();
+        CommandParser::parse(buffer.as_str())
     }
 }
