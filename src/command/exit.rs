@@ -5,7 +5,6 @@ use crate::command::Command;
 pub(crate) struct Exit {
     exit_code: i32,
 }
-
 impl FromStr for Exit {
     type Err = ();
 
