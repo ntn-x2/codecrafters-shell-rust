@@ -1,35 +1,21 @@
-use std::{
-    io::{stdout, Write},
-    str::FromStr,
-};
+use std::io::{stdout, Write};
 
-use crate::command::Command;
+use crate::command::{Command, Context, TryWithArgsAndContext};
 
 pub(crate) struct Echo {
     message: String,
 }
 
-impl FromStr for Echo {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let message = {
-            let split = s
-                .split_once(' ')
-                .map(|(first, second)| (first.trim(), second.trim()));
-            let Some(("echo", second)) = split else {
-                return Err(())
-            };
-            second
-        };
+impl TryWithArgsAndContext for Echo {
+    fn try_with_args_and_context(args: &str, _context: Context) -> Result<Self, ()> {
         Ok(Self {
-            message: message.to_string(),
+            message: args.to_string(),
         })
     }
 }
 
 impl Command for Echo {
-    fn execute(&self) -> Result<(), String> {
+    fn execute(&self) -> Result<(), ()> {
         let mut stdout = stdout();
         stdout.write_all(self.message.as_bytes()).unwrap();
         stdout.write_all(b"\n").unwrap();

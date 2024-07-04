@@ -10,6 +10,7 @@ pub fn parse_command<Input: BufRead>(input: &mut Input) -> Result<Box<dyn Comman
     {
         let mut buffer = String::new();
         input.read_line(&mut buffer).unwrap();
-        CommandParser::parse(buffer.as_str())
+        let command_parser = CommandParser::new();
+        command_parser.parse(buffer.as_str())
     }
 }
