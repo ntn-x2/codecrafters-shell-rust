@@ -51,7 +51,7 @@ impl<'a> CommandParser<'a> {
             ),
         ];
         Self {
-            command_creators: BTreeMap::from_iter(commands.into_iter()),
+            command_creators: BTreeMap::from_iter(commands),
         }
     }
 }
